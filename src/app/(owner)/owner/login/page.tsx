@@ -16,7 +16,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-export default function LoginPage() {
+export default function OwnerLoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,30 +40,32 @@ export default function LoginPage() {
       return;
     }
 
-    // Redirect based on role
-    const role = data.user?.user_metadata?.role ?? "player";
-    if (role === "complex_owner") {
-      router.push("/owner/dashboard");
-    } else if (role === "admin") {
-      router.push("/admin");
-    } else {
-      router.push("/explore");
+    const role = data.user?.user_metadata?.role;
+    if (role !== "complex_owner") {
+      await supabase.auth.signOut();
+      setError("Esta cuenta no tiene acceso al portal de complejos");
+      setLoading(false);
+      return;
     }
+
+    router.push("/owner/dashboard");
     router.refresh();
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-emerald-50 to-gray-100">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-slate-50 to-gray-200">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="text-4xl mb-2">🎾</div>
-          <h1 className="text-3xl font-bold text-emerald-700">Paddlebb</h1>
-          <p className="text-gray-500 text-sm mt-1">Reserva de canchas de paddle</p>
+          <div className="text-4xl mb-2">🏟️</div>
+          <h1 className="text-3xl font-bold text-gray-800">Paddlebb</h1>
+          <p className="text-gray-500 text-sm mt-1">Portal para complejos</p>
         </div>
         <Card>
           <CardHeader>
-            <CardTitle>Bienvenido</CardTitle>
-            <CardDescription>Ingresá para reservar tu turno</CardDescription>
+            <CardTitle>Acceso al complejo</CardTitle>
+            <CardDescription>
+              Ingresá con las credenciales de tu complejo
+            </CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
@@ -77,7 +79,7 @@ export default function LoginPage() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="tu@email.com"
+                  placeholder="complejo@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
@@ -98,22 +100,17 @@ export default function LoginPage() {
               </div>
             </CardContent>
             <CardFooter className="flex flex-col gap-3">
-              <Button type="submit" className="w-full h-12 text-base" disabled={loading}>
+              <Button
+                type="submit"
+                className="w-full h-12 text-base bg-gray-800 hover:bg-gray-900"
+                disabled={loading}
+              >
                 {loading ? "Ingresando..." : "Ingresar"}
               </Button>
-              <p className="text-sm text-gray-500 text-center">
-                ¿No tenés cuenta?{" "}
-                <Link
-                  href="/register"
-                  className="text-emerald-600 font-medium hover:underline"
-                >
-                  Registrate gratis
-                </Link>
-              </p>
               <p className="text-xs text-gray-400 text-center">
-                ¿Sos un complejo?{" "}
-                <Link href="/owner/login" className="text-gray-500 hover:underline">
-                  Acceso para complejos
+                ¿Sos jugador?{" "}
+                <Link href="/login" className="text-emerald-600 hover:underline">
+                  Acceso para jugadores
                 </Link>
               </p>
             </CardFooter>

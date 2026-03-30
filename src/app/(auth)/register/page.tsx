@@ -7,16 +7,20 @@ import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-
-type Role = "player" | "complex_owner";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export default function RegisterPage() {
   const router = useRouter();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<Role>("player");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -30,7 +34,7 @@ export default function RegisterPage() {
       email,
       password,
       options: {
-        data: { full_name: fullName, role },
+        data: { full_name: fullName, role: "player" },
       },
     });
 
@@ -40,7 +44,7 @@ export default function RegisterPage() {
       return;
     }
 
-    router.push("/");
+    router.push("/explore");
     router.refresh();
   }
 
@@ -48,13 +52,16 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-emerald-50 to-gray-100">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
+          <div className="text-4xl mb-2">🎾</div>
           <h1 className="text-3xl font-bold text-emerald-700">Paddlebb</h1>
           <p className="text-gray-500 text-sm mt-1">Reserva de canchas de paddle</p>
         </div>
         <Card>
           <CardHeader>
             <CardTitle>Crear cuenta</CardTitle>
-            <CardDescription>Registrate para comenzar a reservar</CardDescription>
+            <CardDescription>
+              Registrate para empezar a reservar turnos
+            </CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
@@ -63,46 +70,18 @@ export default function RegisterPage() {
                   {error}
                 </div>
               )}
-
-              {/* Role selector */}
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={() => setRole("player")}
-                  className={`flex flex-col items-center gap-1 rounded-lg border-2 p-3 text-sm font-medium transition-colors ${
-                    role === "player"
-                      ? "border-emerald-500 bg-emerald-50 text-emerald-700"
-                      : "border-gray-200 text-gray-600 hover:border-gray-300"
-                  }`}
-                >
-                  <span className="text-2xl">🎾</span>
-                  Jugador
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setRole("complex_owner")}
-                  className={`flex flex-col items-center gap-1 rounded-lg border-2 p-3 text-sm font-medium transition-colors ${
-                    role === "complex_owner"
-                      ? "border-emerald-500 bg-emerald-50 text-emerald-700"
-                      : "border-gray-200 text-gray-600 hover:border-gray-300"
-                  }`}
-                >
-                  <span className="text-2xl">🏟️</span>
-                  Complejo
-                </button>
-              </div>
-
-              <div className="space-y-1">
+              <div className="space-y-1.5">
                 <Label htmlFor="fullName">Nombre completo</Label>
                 <Input
                   id="fullName"
                   placeholder="Juan García"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
+                  autoComplete="name"
                   required
                 />
               </div>
-              <div className="space-y-1">
+              <div className="space-y-1.5">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
@@ -110,10 +89,11 @@ export default function RegisterPage() {
                   placeholder="tu@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="email"
                   required
                 />
               </div>
-              <div className="space-y-1">
+              <div className="space-y-1.5">
                 <Label htmlFor="password">Contraseña</Label>
                 <Input
                   id="password"
@@ -122,18 +102,31 @@ export default function RegisterPage() {
                   minLength={6}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  autoComplete="new-password"
                   required
                 />
               </div>
             </CardContent>
             <CardFooter className="flex flex-col gap-3">
-              <Button type="submit" className="w-full" disabled={loading}>
+              <Button type="submit" className="w-full h-12 text-base" disabled={loading}>
                 {loading ? "Creando cuenta..." : "Crear cuenta"}
               </Button>
               <p className="text-sm text-gray-500 text-center">
                 ¿Ya tenés cuenta?{" "}
-                <Link href="/login" className="text-emerald-600 font-medium hover:underline">
+                <Link
+                  href="/login"
+                  className="text-emerald-600 font-medium hover:underline"
+                >
                   Iniciá sesión
+                </Link>
+              </p>
+              <p className="text-xs text-gray-400 text-center">
+                ¿Sos un complejo?{" "}
+                <Link
+                  href="/owner/login"
+                  className="text-gray-500 hover:underline"
+                >
+                  Acceso para complejos
                 </Link>
               </p>
             </CardFooter>
