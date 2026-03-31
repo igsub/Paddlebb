@@ -8,6 +8,7 @@ import { formatDate, formatTime, formatCurrency } from "@/lib/utils";
 import { MapPin, Users } from "lucide-react";
 import { CancelButton } from "./cancel-button";
 import { ParticipantActions } from "./participant-actions";
+import { RateButton } from "./rate-button";
 
 export default async function BookingsPage() {
   const supabase = await createClient();
@@ -32,7 +33,8 @@ export default async function BookingsPage() {
       open_match:open_matches(
         id, spots_needed, spots_filled, level, match_type, is_open,
         participants:match_participants(id, status, player:profiles!match_participants_player_id_fkey(id, full_name))
-      )
+      ),
+      rating:ratings(score)
     `)
     .eq("player_id", user.id)
     .order("slot(date)", { ascending: true })
@@ -245,35 +247,49 @@ export default async function BookingsPage() {
               court: { name: string; complex: { id: string; name: string } };
             } | null;
             const complex = slot?.court?.complex;
+            const existingRating = (booking.rating as unknown as { score: number }[] | null)?.[0] ?? null;
+            const isCompleted = booking.status !== "cancelled";
             return (
               <div
                 key={booking.id}
-                className="flex items-center justify-between p-3 rounded-xl bg-white border border-gray-100 opacity-70"
+                className="p-3 rounded-xl bg-white border border-gray-100 opacity-80"
               >
-                <div className="min-w-0">
-                  <p className="text-sm font-medium text-gray-700 truncate">
-                    {complex?.name}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {slot?.court?.name} · {slot ? formatDate(slot.date) : ""} ·{" "}
-                    {slot ? formatTime(slot.start_time) : ""}
-                  </p>
-                </div>
-                <div className="flex items-center gap-2 shrink-0">
-                  <Badge
-                    variant={booking.status === "cancelled" ? "destructive" : "secondary"}
-                  >
-                    {booking.status === "cancelled" ? "Cancelada" : "Completada"}
-                  </Badge>
-                  {booking.status !== "cancelled" && complex && (
-                    <Link
-                      href={`/explore/${complex.id}`}
-                      className="text-xs text-emerald-600 hover:underline shrink-0"
+                <div className="flex items-center justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-gray-700 truncate">
+                      {complex?.name}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {slot?.court?.name} · {slot ? formatDate(slot.date) : ""} ·{" "}
+                      {slot ? formatTime(slot.start_time) : ""}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <Badge
+                      variant={booking.status === "cancelled" ? "destructive" : "secondary"}
                     >
-                      Reservar de nuevo
-                    </Link>
-                  )}
+                      {booking.status === "cancelled" ? "Cancelada" : "Completada"}
+                    </Badge>
+                    {isCompleted && complex && (
+                      <Link
+                        href={`/explore/${complex.id}`}
+                        className="text-xs text-emerald-600 hover:underline shrink-0"
+                      >
+                        Reservar de nuevo
+                      </Link>
+                    )}
+                  </div>
                 </div>
+                {isCompleted && complex && (
+                  <div className="mt-2 flex items-center gap-2">
+                    <RateButton
+                      bookingId={booking.id}
+                      complexId={complex.id}
+                      complexName={complex.name}
+                      existingScore={existingRating?.score ?? null}
+                    />
+                  </div>
+                )}
               </div>
             );
           })}

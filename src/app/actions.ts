@@ -30,6 +30,44 @@ export async function unsubscribePush() {
   return { success: true };
 }
 
+export async function submitRating(
+  bookingId: string,
+  complexId: string,
+  score: number,
+  comment: string
+) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: "No autenticado" };
+
+  if (score < 1 || score > 5) return { error: "Puntaje inválido" };
+
+  // Verify ownership of the booking
+  const { data: booking } = await supabase
+    .from("bookings")
+    .select("id, player_id")
+    .eq("id", bookingId)
+    .eq("player_id", user.id)
+    .single();
+
+  if (!booking) return { error: "Reserva no encontrada" };
+
+  const { error } = await supabase.from("ratings").insert({
+    booking_id: bookingId,
+    player_id: user.id,
+    complex_id: complexId,
+    score,
+    comment: comment.trim() || null,
+  });
+
+  if (error) {
+    if (error.code === "23505") return { error: "Ya calificaste esta reserva" };
+    return { error: "Error al guardar la calificación" };
+  }
+
+  return { success: true };
+}
+
 export async function notifyUser(userId: string, payload: PushPayload) {
   const supabase = await createClient();
   const { data: profile } = await supabase
