@@ -18,6 +18,7 @@ Una vez creado el proyecto, ir a **SQL Editor** en el panel de Supabase y ejecut
 
 1. `supabase/migrations/001_initial_schema.sql`
 2. `supabase/migrations/002_add_location_and_improvements.sql`
+3. `supabase/migrations/003_open_matches.sql`
 
 ### Obtener las API keys
 
@@ -123,7 +124,54 @@ Este es el flujo para dar de alta un nuevo complejo:
 
 ---
 
-## 6. Hosting en Vercel (recomendado)
+## 6. Recordatorios automáticos (Cron Job)
+
+La ruta `/api/cron/reminders` envía push notifications a los jugadores con turnos en las próximas 24 horas.
+
+### Configurar en Vercel Cron:
+
+Agregar a `vercel.json` en la raíz del proyecto:
+
+```json
+{
+  "crons": [
+    {
+      "path": "/api/cron/reminders",
+      "schedule": "0 10 * * *"
+    }
+  ]
+}
+```
+
+Esto ejecuta el recordatorio todos los días a las 10:00 AM UTC.
+
+### Agregar variable de entorno de seguridad:
+
+```env
+CRON_SECRET=un-string-secreto-largo-y-aleatorio
+```
+
+Vercel enviará automáticamente el header `Authorization: Bearer <CRON_SECRET>` al llamar al endpoint.
+
+> **Nota:** Los cron jobs de Vercel requieren plan **Pro** ($20/mes). Alternativa gratuita: usar [cron-job.org](https://cron-job.org) con el header `Authorization: Bearer <CRON_SECRET>`.
+
+---
+
+## 7. Partidos abiertos (Open Matches)
+
+Los jugadores pueden publicar sus turnos como "partidos abiertos" para buscar compañeros. No requiere configuración adicional — funciona automáticamente una vez que la migración `003_open_matches.sql` está ejecutada.
+
+**Flujo:**
+1. Jugador reserva una cancha
+2. En el modal de confirmación puede activar "Publicar partido abierto"
+3. Elige cuántos compañeros busca (1-3) y el nivel de juego
+4. El partido aparece en `/matches` para que otros jugadores lo vean y soliciten unirse
+5. El creador recibe una notificación push y aprueba/rechaza cada solicitud desde `/bookings`
+6. El participante aceptado recibe una notificación de confirmación
+
+---
+
+## 8. Hosting en Vercel (recomendado)
 
 1. Crear cuenta en [vercel.com](https://vercel.com)
 2. Conectar el repositorio de GitHub
@@ -139,7 +187,7 @@ Este es el flujo para dar de alta un nuevo complejo:
 
 ---
 
-## 7. Dominio personalizado
+## 9. Dominio personalizado
 
 En Vercel:
 1. Settings → Domains → Add Domain

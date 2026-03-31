@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Profile } from "@/types";
 import { Button } from "@/components/ui/button";
-import { LogOut, Calendar, Search } from "lucide-react";
+import { LogOut, Calendar, Search, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface NavbarProps {
@@ -14,6 +14,7 @@ interface NavbarProps {
 
 const playerLinks = [
   { href: "/explore", label: "Explorar", icon: Search },
+  { href: "/matches", label: "Partidos", icon: Users },
   { href: "/bookings", label: "Mis turnos", icon: Calendar },
 ];
 
