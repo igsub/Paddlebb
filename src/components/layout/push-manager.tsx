@@ -26,7 +26,11 @@ export function PushManager() {
         });
 
         const existing = await reg.pushManager.getSubscription();
-        if (existing) return; // already subscribed
+        if (existing) {
+          // Re-sync subscription to DB (may be null if user logged in from new device)
+          await subscribePush(JSON.parse(JSON.stringify(existing)));
+          return;
+        }
 
         const permission = await Notification.requestPermission();
         if (permission !== "granted") return;

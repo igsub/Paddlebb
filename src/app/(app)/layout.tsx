@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Navbar } from "@/components/layout/navbar";
 import { PushManager } from "@/components/layout/push-manager";
+import { InstallPrompt } from "@/components/layout/install-prompt";
 import { Profile } from "@/types";
 
 export default async function AppLayout({
@@ -32,6 +33,7 @@ export default async function AppLayout({
     <div className="flex flex-col min-h-screen">
       <Navbar profile={profile as Profile} />
       <PushManager />
+      <InstallPrompt />
       <main className="flex-1 pb-20 md:pb-0">{children}</main>
     </div>
   );
