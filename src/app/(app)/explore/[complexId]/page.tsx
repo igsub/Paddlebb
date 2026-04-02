@@ -219,6 +219,7 @@ export default async function ComplexDetailPage({
 
       {/* Courts and slots — realtime */}
       <SlotsGrid
+        key={`${complexId}-${selectedDate}`}
         courts={(courts ?? []).map((ct) => ({
           id: ct.id,
           name: ct.name,
