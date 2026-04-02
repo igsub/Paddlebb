@@ -21,6 +21,7 @@ export default function RegisterPage() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -34,7 +35,7 @@ export default function RegisterPage() {
       email,
       password,
       options: {
-        data: { full_name: fullName, role: "player" },
+        data: { full_name: fullName, role: "player", phone: phone || null },
       },
     });
 
@@ -91,6 +92,20 @@ export default function RegisterPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
                   required
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="phone">
+                  Teléfono{" "}
+                  <span className="text-gray-400 font-normal">(opcional)</span>
+                </Label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  placeholder="+54 11 1234-5678"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  autoComplete="tel"
                 />
               </div>
               <div className="space-y-1.5">

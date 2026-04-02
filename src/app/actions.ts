@@ -30,6 +30,28 @@ export async function unsubscribePush() {
   return { success: true };
 }
 
+export async function updateProfile(data: {
+  full_name: string;
+  phone: string;
+  level: string;
+}) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: "No autenticado" };
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({
+      full_name: data.full_name.trim(),
+      phone: data.phone.trim() || null,
+      level: data.level || null,
+    })
+    .eq("id", user.id);
+
+  if (error) return { error: "Error al guardar el perfil" };
+  return { success: true };
+}
+
 export async function submitRating(
   bookingId: string,
   complexId: string,

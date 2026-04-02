@@ -1,11 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { usePathname } from "next/navigation";
 import { Profile } from "@/types";
-import { Button } from "@/components/ui/button";
-import { LogOut, Calendar, Search, Users } from "lucide-react";
+import { Calendar, Search, Users, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface NavbarProps {
@@ -16,18 +14,11 @@ const playerLinks = [
   { href: "/explore", label: "Explorar", icon: Search },
   { href: "/matches", label: "Partidos", icon: Users },
   { href: "/bookings", label: "Mis turnos", icon: Calendar },
+  { href: "/profile", label: "Perfil", icon: User },
 ];
 
 export function Navbar({ profile }: NavbarProps) {
-  const router = useRouter();
   const pathname = usePathname();
-
-  async function handleLogout() {
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    router.push("/login");
-    router.refresh();
-  }
 
   return (
     <>
@@ -52,19 +43,9 @@ export function Navbar({ profile }: NavbarProps) {
             </Link>
           ))}
         </nav>
-        <div className="flex items-center gap-3">
-          <span className="text-sm text-gray-500 max-w-[150px] truncate">
-            {profile.full_name}
-          </span>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleLogout}
-            title="Cerrar sesión"
-          >
-            <LogOut className="h-4 w-4" />
-          </Button>
-        </div>
+        <span className="text-sm text-gray-500 max-w-[150px] truncate">
+          {profile.full_name}
+        </span>
       </header>
 
       {/* Mobile top bar */}
@@ -88,13 +69,6 @@ export function Navbar({ profile }: NavbarProps) {
               {label}
             </Link>
           ))}
-          <button
-            onClick={handleLogout}
-            className="flex-1 flex flex-col items-center gap-1 py-3 text-xs font-medium text-gray-400"
-          >
-            <LogOut className="h-5 w-5" />
-            Salir
-          </button>
         </div>
       </nav>
     </>

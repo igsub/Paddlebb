@@ -83,12 +83,17 @@ export default async function OwnerDashboardPage() {
             {complex.address}, {complex.city}
           </p>
         </div>
-        <Button asChild size="sm">
-          <Link href="/owner/courts/new">
-            <PlusCircle className="h-4 w-4" />
-            Cancha
-          </Link>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button asChild size="sm" variant="outline">
+            <Link href="/owner/complex/edit">Editar</Link>
+          </Button>
+          <Button asChild size="sm">
+            <Link href="/owner/courts/new">
+              <PlusCircle className="h-4 w-4" />
+              Cancha
+            </Link>
+          </Button>
+        </div>
       </div>
 
       {/* Stats */}
