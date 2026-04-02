@@ -56,6 +56,13 @@ export default async function ComplexDetailPage({
           .order("start_time")
       : { data: [] };
 
+  const { data: ratings } = await supabase
+    .from("ratings")
+    .select("score, comment, created_at, player:profiles!ratings_player_id_fkey(full_name)")
+    .eq("complex_id", complexId)
+    .order("created_at", { ascending: false })
+    .limit(5);
+
   const { data: waitlistEntries } =
     user && slots && slots.length > 0
       ? await supabase
@@ -144,6 +151,35 @@ export default async function ComplexDetailPage({
           name={c.name}
           address={`${c.address}, ${c.city}`}
         />
+      )}
+
+      {/* Reviews */}
+      {ratings && ratings.length > 0 && (
+        <div className="space-y-2">
+          <h2 className="text-sm font-semibold text-gray-700">
+            Opiniones ({ratings.length}{ratings.length === 5 ? "+" : ""})
+          </h2>
+          <div className="space-y-2">
+            {ratings.map((r, i) => {
+              const player = r.player as unknown as { full_name: string } | null;
+              return (
+                <div key={i} className="bg-white rounded-xl border border-gray-100 px-3 py-2.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-xs font-medium text-gray-700">
+                      {player?.full_name ?? "Jugador"}
+                    </span>
+                    <span className="text-xs text-yellow-500 font-semibold">
+                      {"★".repeat(r.score)}{"☆".repeat(5 - r.score)}
+                    </span>
+                  </div>
+                  {r.comment && (
+                    <p className="text-xs text-gray-500 mt-1 italic">"{r.comment}"</p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
       )}
 
       {/* Date selector */}
