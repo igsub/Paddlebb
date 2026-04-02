@@ -166,6 +166,7 @@ export default async function BookingsPage() {
                           bookingId={booking.id}
                           slotId={booking.slot_id}
                           ownerId={complex?.owner_id}
+                          complexId={complex?.id}
                         />
                       )}
                       {!canCancel && (

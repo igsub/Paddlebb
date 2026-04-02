@@ -10,9 +10,10 @@ interface CancelButtonProps {
   bookingId: string;
   slotId: string;
   ownerId?: string;
+  complexId?: string;
 }
 
-export function CancelButton({ bookingId, slotId, ownerId }: CancelButtonProps) {
+export function CancelButton({ bookingId, slotId, ownerId, complexId }: CancelButtonProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
@@ -52,7 +53,7 @@ export function CancelButton({ bookingId, slotId, ownerId }: CancelButtonProps) 
       await notifyUser(ownerId, {
         title: "Reserva cancelada",
         body: `${profile?.full_name ?? "Un jugador"} canceló su reserva`,
-        url: "/dashboard",
+        url: "/owner/dashboard",
       });
     }
 
@@ -67,15 +68,16 @@ export function CancelButton({ bookingId, slotId, ownerId }: CancelButtonProps) 
     if (waitlist && waitlist.length > 0) {
       const { data: slot } = await supabase
         .from("slots")
-        .select("date, start_time, court:courts!slots_court_id_fkey(name, complex:complexes!courts_complex_id_fkey(name))")
+        .select("date, start_time, court:courts!slots_court_id_fkey(name, complex:complexes!courts_complex_id_fkey(id, name))")
         .eq("id", slotId)
         .single();
 
       const courtName = (slot?.court as unknown as { name: string })?.name;
+      const complexSlug = (slot?.court as unknown as { complex?: { id?: string } })?.complex?.id;
       await notifyUser(waitlist[0].player_id, {
         title: "Turno disponible",
         body: `Se liberó un turno en ${courtName} para el ${slot?.date}. ¡Reservá ahora!`,
-        url: `/explore`,
+        url: complexSlug ? `/explore/${complexSlug}` : `/explore`,
       });
     }
 
