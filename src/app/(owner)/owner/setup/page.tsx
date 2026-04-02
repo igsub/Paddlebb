@@ -114,7 +114,7 @@ export default function OwnerSetupPage() {
               <Label htmlFor="city">Ciudad *</Label>
               <Input
                 id="city"
-                placeholder="Buenos Aires"
+                placeholder="Bahía Blanca"
                 value={form.city}
                 onChange={(e) => set("city", e.target.value)}
                 required

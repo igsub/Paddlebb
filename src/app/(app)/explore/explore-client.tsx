@@ -122,7 +122,7 @@ export function ExploreClient({ complexes, cities }: ExploreClientProps) {
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
         <input
           type="search"
-          placeholder="Buscar complejo o ciudad..."
+          placeholder="Buscar complejo..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full h-11 pl-9 pr-4 rounded-xl border border-gray-200 bg-white text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"

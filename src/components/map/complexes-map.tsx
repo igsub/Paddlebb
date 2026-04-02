@@ -46,11 +46,11 @@ export function ComplexesMap({
         shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
       });
 
-      // Center on Buenos Aires by default, or first complex
+      // Center on Bahía Blanca by default, or first complex
       const center: [number, number] =
         complexes.length > 0
           ? [complexes[0].lat, complexes[0].lng]
-          : [-34.6037, -58.3816];
+          : [-38.7183, -62.2663];
 
       const map = L.map(containerRef.current, {
         center,

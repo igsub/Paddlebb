@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Padelbb – Reserva de canchas de padel",
+    name: "Padelbb – Reservá canchas de pádel en Bahía Blanca",
     short_name: "Padelbb",
-    description: "Encontrá y reservá canchas de padel en tu ciudad",
+    description: "Reservá canchas de pádel en Bahía Blanca en segundos. Disponibilidad en tiempo real.",
     start_url: "/",
     display: "standalone",
     background_color: "#f9fafb",

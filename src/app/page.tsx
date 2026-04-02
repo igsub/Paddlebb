@@ -64,7 +64,7 @@ export default async function RootPage() {
           </h1>
 
           <p className="text-emerald-100 text-lg sm:text-xl max-w-xl mx-auto mb-8 leading-relaxed">
-            Encontrá canchas de padel cerca tuyo, chequeá disponibilidad en el mapa y reservá con un toque. Sin llamadas, sin esperas.
+            La plataforma de pádel de Bahía Blanca. Chequeá disponibilidad en el mapa y reservá tu cancha con un toque. Sin llamadas, sin esperas.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -103,7 +103,7 @@ export default async function RootPage() {
             <span className="flex items-center gap-1.5"><CheckCircle className="h-4 w-4 text-emerald-500" />Sin costo para jugadores</span>
             <span className="flex items-center gap-1.5"><CheckCircle className="h-4 w-4 text-emerald-500" />Disponibilidad en tiempo real</span>
             <span className="flex items-center gap-1.5"><CheckCircle className="h-4 w-4 text-emerald-500" />Partidos abiertos</span>
-            <span className="flex items-center gap-1.5"><CheckCircle className="h-4 w-4 text-emerald-500" />Canchas en todo el país</span>
+            <span className="flex items-center gap-1.5"><CheckCircle className="h-4 w-4 text-emerald-500" />Los mejores complejos de Bahía Blanca</span>
           </div>
         </div>
       </section>
@@ -126,7 +126,7 @@ export default async function RootPage() {
                 icon: MapPin,
                 color: "bg-blue-50 text-blue-600",
                 title: "Mapa interactivo",
-                desc: "Encontrá los complejos más cercanos con un mapa en tiempo real. Filtrá por ciudad o tipo de cancha.",
+                desc: "Encontrá los complejos de pádel en Bahía Blanca en un mapa en tiempo real. Filtrá por tipo de cancha o superficie.",
               },
               {
                 icon: Zap,
@@ -177,7 +177,7 @@ export default async function RootPage() {
                 step: "01",
                 emoji: "🗺️",
                 title: "Explorá los complejos",
-                desc: "Abrí el mapa, aplicá filtros por ciudad o tipo de cancha y encontrá el complejo que más te convenga.",
+                desc: "Abrí el mapa, explorá los complejos de Bahía Blanca y encontrá el que más te convenga.",
               },
               {
                 step: "02",
@@ -252,7 +252,7 @@ export default async function RootPage() {
               <div className="p-10 flex items-center justify-center">
                 <div className="w-full max-w-xs bg-white rounded-2xl shadow-2xl p-5 space-y-3">
                   <div className="flex items-center justify-between">
-                    <p className="font-bold text-gray-900 text-sm">Club Padel Norte</p>
+                    <p className="font-bold text-gray-900 text-sm">Club Padel Bahía</p>
                     <span className="text-xs bg-purple-100 text-purple-700 font-semibold px-2 py-0.5 rounded-full">Cancha 2</span>
                   </div>
                   <p className="text-xs text-gray-500">📅 Sábado 12 abr · ⏰ 19:00 — 20:30</p>
@@ -286,9 +286,9 @@ export default async function RootPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {[
-              { name: "Lucía M.", rating: 5, comment: "Canchas impecables, el piso de cristal es increíble. Reservé en 30 segundos.", complex: "Club Palermo Padel" },
-              { name: "Rodrigo T.", rating: 5, comment: "Me avisaron cuando se liberó el horario que quería. Excelente la app.", complex: "Padel Zone Norte" },
-              { name: "Valeria S.", rating: 4, comment: "Muy fácil encontrar compañeros con los partidos abiertos. Lo recomiendo.", complex: "Centro Padel BA" },
+              { name: "Lucía M.", rating: 5, comment: "Canchas impecables, el piso de cristal es increíble. Reservé en 30 segundos.", complex: "Padel Sur BB" },
+              { name: "Rodrigo T.", rating: 5, comment: "Me avisaron cuando se liberó el horario que quería. Excelente la app.", complex: "Club Padel Bahía" },
+              { name: "Valeria S.", rating: 4, comment: "Muy fácil encontrar compañeros con los partidos abiertos. Lo recomiendo.", complex: "Padel Norte Bahía Blanca" },
             ].map(({ name, rating, comment, complex }) => (
               <div key={name} className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
                 <div className="flex items-center gap-1 mb-3">

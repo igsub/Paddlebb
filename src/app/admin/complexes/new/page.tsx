@@ -155,7 +155,7 @@ export default function AdminNewComplexPage() {
               value={form.city}
               onChange={(e) => set("city", e.target.value)}
               className="bg-gray-700 border-gray-600 text-white"
-              placeholder="Buenos Aires"
+              placeholder="Bahía Blanca"
               required
             />
           </div>
