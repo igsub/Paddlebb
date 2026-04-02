@@ -27,7 +27,7 @@ export default async function BookingsPage() {
         id, date, start_time, end_time, price,
         court:courts!slots_court_id_fkey(
           id, name,
-          complex:complexes!courts_complex_id_fkey(id, name, address, city, owner_id)
+          complex:complexes!courts_complex_id_fkey(id, name, address, city, owner_id, cancellation_hours)
         )
       ),
       open_match:open_matches(
@@ -94,6 +94,7 @@ export default async function BookingsPage() {
                   address: string;
                   city: string;
                   owner_id: string;
+                  cancellation_hours: number | null;
                 };
               };
             } | null;
@@ -128,7 +129,8 @@ export default async function BookingsPage() {
             const hoursUntil = slotDateTime
               ? (slotDateTime.getTime() - now.getTime()) / (1000 * 60 * 60)
               : Infinity;
-            const canCancel = hoursUntil > 2; // Default 2h policy
+            const cancellationHours = complex?.cancellation_hours ?? 2;
+            const canCancel = hoursUntil > cancellationHours;
 
             return (
               <Card key={booking.id} className="overflow-hidden">
@@ -167,8 +169,8 @@ export default async function BookingsPage() {
                         />
                       )}
                       {!canCancel && (
-                        <span className="text-xs text-gray-400">
-                          Sin cancelación
+                        <span className="text-xs text-gray-400 text-right leading-tight">
+                          Sin cancelación<br />({cancellationHours}h policy)
                         </span>
                       )}
                     </div>

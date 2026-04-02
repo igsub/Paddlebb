@@ -72,7 +72,7 @@ export default async function ComplexDetailPage({
     (waitlistEntries ?? []).map((w) => w.slot_id)
   );
 
-  const dates = Array.from({ length: 7 }, (_, i) => {
+  const dates = Array.from({ length: 14 }, (_, i) => {
     const d = new Date();
     d.setDate(d.getDate() + i);
     return d.toISOString().split("T")[0];
