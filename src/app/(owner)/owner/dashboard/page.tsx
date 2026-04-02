@@ -32,8 +32,13 @@ export default async function OwnerDashboardPage() {
 
   const today = new Date().toISOString().split("T")[0];
 
+  const weekStart = new Date();
+  weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+  const weekStartStr = weekStart.toISOString().split("T")[0];
+
   const [
     { count: todayBookings },
+    { count: weekBookings },
     { count: totalCourts },
     { data: todayBookingList },
     { data: ratings },
@@ -44,6 +49,11 @@ export default async function OwnerDashboardPage() {
       .eq("status", "confirmed")
       .gte("created_at", `${today}T00:00:00`)
       .lte("created_at", `${today}T23:59:59`),
+    supabase
+      .from("bookings")
+      .select("id", { count: "exact" })
+      .eq("status", "confirmed")
+      .gte("created_at", `${weekStartStr}T00:00:00`),
     supabase
       .from("courts")
       .select("id", { count: "exact" })
@@ -109,9 +119,9 @@ export default async function OwnerDashboardPage() {
           {
             icon: TrendingUp,
             color: "text-blue-600",
-            label: "Pendientes",
-            value: totalCourts ?? 0,
-            sub: "canchas activas",
+            label: "Esta semana",
+            value: weekBookings ?? 0,
+            sub: "reservas",
           },
           {
             icon: Users,
