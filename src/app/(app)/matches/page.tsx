@@ -39,7 +39,7 @@ export default async function MatchesPage({
     .from("open_matches")
     .select(`
       id, spots_needed, spots_filled, level, match_type, notes, created_at,
-      creator:profiles!open_matches_creator_id_fkey(id, full_name),
+      creator:profiles!open_matches_creator_id_fkey(id, full_name, level),
       booking:bookings!open_matches_booking_id_fkey(
         id,
         slot:slots!bookings_slot_id_fkey(
@@ -130,7 +130,7 @@ export default async function MatchesPage({
                 court: { name: string; complex: { id: string; name: string; city: string } };
               };
             } | null;
-            const creator = match.creator as unknown as { id: string; full_name: string } | null;
+            const creator = match.creator as unknown as { id: string; full_name: string; level?: string } | null;
             const slot = booking?.slot;
             const court = slot?.court;
             const complex = court?.complex;
@@ -180,6 +180,11 @@ export default async function MatchesPage({
                       {/* Creator */}
                       <p className="text-xs text-gray-400 mt-2">
                         Organiza: {creator?.full_name}
+                        {creator?.level && (
+                          <span className="ml-1 text-gray-500">
+                            · {levelLabel[creator.level] ?? creator.level}
+                          </span>
+                        )}
                       </p>
 
                       {/* Notes */}

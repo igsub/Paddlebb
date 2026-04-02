@@ -24,6 +24,7 @@ export default function RegisterPage() {
   const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [needsConfirmation, setNeedsConfirmation] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -31,7 +32,7 @@ export default function RegisterPage() {
     setLoading(true);
 
     const supabase = createClient();
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -41,6 +42,13 @@ export default function RegisterPage() {
 
     if (error) {
       setError(error.message);
+      setLoading(false);
+      return;
+    }
+
+    // If Supabase requires email confirmation, session will be null
+    if (!data.session) {
+      setNeedsConfirmation(true);
       setLoading(false);
       return;
     }
@@ -57,6 +65,27 @@ export default function RegisterPage() {
           <h1 className="text-3xl font-bold text-emerald-700">Paddlebb</h1>
           <p className="text-gray-500 text-sm mt-1">Reserva de canchas de paddle</p>
         </div>
+        {needsConfirmation ? (
+          <Card>
+            <CardContent className="pt-6 pb-6 text-center space-y-3">
+              <div className="text-4xl">📧</div>
+              <h2 className="text-lg font-bold text-gray-900">
+                Revisá tu email
+              </h2>
+              <p className="text-sm text-gray-500">
+                Te enviamos un link de confirmación a{" "}
+                <span className="font-medium text-gray-700">{email}</span>.
+                Hacé clic en el link para activar tu cuenta.
+              </p>
+              <a
+                href="/login"
+                className="block mt-2 text-sm text-emerald-600 font-medium hover:underline"
+              >
+                Ya confirmé → Iniciar sesión
+              </a>
+            </CardContent>
+          </Card>
+        ) : (
         <Card>
           <CardHeader>
             <CardTitle>Crear cuenta</CardTitle>
@@ -147,6 +176,7 @@ export default function RegisterPage() {
             </CardFooter>
           </form>
         </Card>
+        )}
       </div>
     </div>
   );
