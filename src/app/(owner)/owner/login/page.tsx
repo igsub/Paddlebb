@@ -57,7 +57,7 @@ export default function OwnerLoginPage() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <div className="text-4xl mb-2">🏟️</div>
-          <h1 className="text-3xl font-bold text-gray-800">Paddlebb</h1>
+          <h1 className="text-3xl font-bold text-gray-800">Padelbb</h1>
           <p className="text-gray-500 text-sm mt-1">Portal para complejos</p>
         </div>
         <Card>

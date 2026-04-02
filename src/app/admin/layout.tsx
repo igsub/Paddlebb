@@ -19,7 +19,7 @@ export default async function AdminLayout({
       {user && user.user_metadata?.role === "admin" && (
         <header className="flex items-center justify-between px-6 py-3 bg-gray-900 border-b border-gray-800">
           <Link href="/admin" className="font-bold text-sm text-white">
-            Paddlebb Admin
+            Padelbb Admin
           </Link>
           <nav className="flex items-center gap-4 text-sm text-gray-400">
             <Link href="/admin" className="hover:text-white">

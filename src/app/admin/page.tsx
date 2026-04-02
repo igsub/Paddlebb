@@ -35,7 +35,7 @@ export default async function AdminPage() {
     <div className="max-w-4xl mx-auto px-6 py-8 space-y-8">
       <div>
         <h1 className="text-2xl font-bold text-white">Dashboard</h1>
-        <p className="text-gray-400 text-sm">Panel de administración de Paddlebb</p>
+        <p className="text-gray-400 text-sm">Panel de administración de Padelbb</p>
       </div>
 
       {/* Stats */}

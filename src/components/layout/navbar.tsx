@@ -25,7 +25,7 @@ export function Navbar({ profile }: NavbarProps) {
       {/* Desktop top bar */}
       <header className="hidden md:flex items-center justify-between px-6 py-3 bg-white border-b border-gray-200 sticky top-0 z-40">
         <Link href="/explore" className="font-bold text-xl text-emerald-700">
-          🎾 Paddlebb
+          🎾 Padelbb
         </Link>
         <nav className="flex items-center gap-1">
           {playerLinks.map(({ href, label }) => (
@@ -50,7 +50,7 @@ export function Navbar({ profile }: NavbarProps) {
 
       {/* Mobile top bar */}
       <header className="md:hidden flex items-center justify-between px-4 py-3 bg-white border-b border-gray-200 sticky top-0 z-40">
-        <span className="font-bold text-base text-emerald-700">🎾 Paddlebb</span>
+        <span className="font-bold text-base text-emerald-700">🎾 Padelbb</span>
       </header>
 
       {/* Mobile bottom nav */}

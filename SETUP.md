@@ -1,4 +1,4 @@
-# Paddlebb — Guía de configuración
+# Padelbb — Guía de configuración
 
 Este documento explica todo lo que necesitás configurar para que la aplicación funcione en producción.
 

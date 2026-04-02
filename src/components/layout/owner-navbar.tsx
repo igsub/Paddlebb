@@ -35,7 +35,7 @@ export function OwnerNavbar({ profile }: OwnerNavbarProps) {
       {/* Desktop top bar */}
       <header className="hidden md:flex items-center justify-between px-6 py-3 bg-gray-900 text-white sticky top-0 z-40">
         <Link href="/owner/dashboard" className="font-bold text-lg text-white flex items-center gap-2">
-          <span>🏟️</span> Paddlebb Complejos
+          <span>🏟️</span> Padelbb Complejos
         </Link>
         <nav className="flex items-center gap-1">
           {links.map(({ href, label }) => (

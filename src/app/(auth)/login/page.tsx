@@ -57,8 +57,8 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <div className="text-4xl mb-2">🎾</div>
-          <h1 className="text-3xl font-bold text-emerald-700">Paddlebb</h1>
-          <p className="text-gray-500 text-sm mt-1">Reserva de canchas de paddle</p>
+          <h1 className="text-3xl font-bold text-emerald-700">Padelbb</h1>
+          <p className="text-gray-500 text-sm mt-1">Reserva de canchas de padel</p>
         </div>
         <Card>
           <CardHeader>

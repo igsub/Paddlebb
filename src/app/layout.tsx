@@ -2,13 +2,13 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Paddlebb – Reserva de canchas de paddle",
-  description: "Encontrá y reservá canchas de paddle en tu ciudad",
+  title: "Padelbb – Reserva de canchas de padel",
+  description: "Encontrá y reservá canchas de padel en tu ciudad",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Paddlebb",
+    title: "Padelbb",
   },
 };
 

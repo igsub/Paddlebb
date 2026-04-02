@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Paddlebb – Reserva de canchas de paddle",
-    short_name: "Paddlebb",
-    description: "Encontrá y reservá canchas de paddle en tu ciudad",
+    name: "Padelbb – Reserva de canchas de padel",
+    short_name: "Padelbb",
+    description: "Encontrá y reservá canchas de padel en tu ciudad",
     start_url: "/",
     display: "standalone",
     background_color: "#f9fafb",

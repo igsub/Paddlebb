@@ -56,7 +56,7 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <p className="text-gray-400 text-sm">ADMIN</p>
-          <h1 className="text-2xl font-bold text-white">Paddlebb</h1>
+          <h1 className="text-2xl font-bold text-white">Padelbb</h1>
         </div>
         <Card className="border-gray-700 bg-gray-800 text-white">
           <CardHeader>

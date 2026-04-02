@@ -94,7 +94,7 @@ export default function OwnerSetupPage() {
               <Label htmlFor="name">Nombre del complejo *</Label>
               <Input
                 id="name"
-                placeholder="Club de Paddle Norte"
+                placeholder="Club de Padel Norte"
                 value={form.name}
                 onChange={(e) => set("name", e.target.value)}
                 required

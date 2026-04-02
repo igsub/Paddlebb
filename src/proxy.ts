@@ -32,7 +32,7 @@ export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Public paths that don't require authentication
-  const publicPaths = ["/login", "/register", "/owner/login", "/admin/login", "/landing"];
+  const publicPaths = ["/", "/login", "/register", "/owner/login", "/admin/login", "/landing"];
   const isPublic =
     publicPaths.some((p) => pathname === p || pathname.startsWith(p + "/")) ||
     pathname.startsWith("/_next") ||
