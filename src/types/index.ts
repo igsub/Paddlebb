@@ -1,11 +1,14 @@
 export type UserRole = "player" | "complex_owner";
 
+export type PlayerLevel = "principiante" | "intermedio" | "avanzado" | "competitivo";
+
 export interface Profile {
   id: string;
   email: string;
   full_name: string;
   role: UserRole;
   phone?: string;
+  level?: PlayerLevel | null;
   avatar_url?: string;
   push_subscription?: PushSubscriptionJSON | null;
   created_at: string;
