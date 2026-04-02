@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { MapPin, Phone, MessageCircle, Star } from "lucide-react";
+import { MapPin, Phone, MessageCircle, Star, ArrowLeft } from "lucide-react";
 import { ComplexDetailMap } from "./complex-detail-map";
 import { SlotsGrid } from "./slots-grid";
 import { Complex, Slot } from "@/types";
@@ -97,6 +97,17 @@ export default async function ComplexDetailPage({
   return (
     <div className="max-w-2xl mx-auto px-4 py-5 space-y-5">
       {/* Header */}
+      {/* Back navigation (mobile) */}
+      <div className="md:hidden">
+        <Link
+          href="/explore"
+          className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 -ml-1"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Explorar
+        </Link>
+      </div>
+
       <div>
         <div className="flex items-start justify-between gap-2">
           <h1 className="text-2xl font-bold text-gray-900">{c.name}</h1>
