@@ -8,7 +8,7 @@ export default async function RootPage() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/login");
+    redirect("/landing");
   }
 
   const { data: profile } = await supabase
@@ -18,7 +18,7 @@ export default async function RootPage() {
     .single();
 
   if (profile?.role === "complex_owner") {
-    redirect("/dashboard");
+    redirect("/owner/dashboard");
   }
 
   redirect("/explore");
