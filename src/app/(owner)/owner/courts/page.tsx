@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { PlusCircle, ChevronRight } from "lucide-react";
 import { Court } from "@/types";
+import { CourtActions } from "./court-actions";
 
 const surfaceLabels: Record<string, string> = {
   cemento: "Cemento",
@@ -78,7 +79,14 @@ export default async function OwnerCourtsPage() {
                       )}
                     </div>
                   </div>
-                  <ChevronRight className="h-5 w-5 text-gray-400 shrink-0" />
+                  <div className="flex items-center gap-2 shrink-0">
+                    <CourtActions
+                      courtId={court.id}
+                      isActive={court.active}
+                      courtName={court.name}
+                    />
+                    <ChevronRight className="h-5 w-5 text-gray-400" />
+                  </div>
                 </CardContent>
               </Card>
             </Link>
