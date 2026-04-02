@@ -77,23 +77,17 @@ export default function AdminNewComplexPage() {
     }
 
     setLoading(true);
-    const supabase = createClient();
 
-    const { error } = await supabase.from("complexes").insert({
-      owner_id: form.owner_id,
-      name: form.name,
-      address: form.address,
-      city: form.city,
-      phone: form.phone || null,
-      whatsapp: form.whatsapp || null,
-      description: form.description || null,
-      lat: form.lat ? parseFloat(form.lat) : null,
-      lng: form.lng ? parseFloat(form.lng) : null,
-      cancellation_hours: parseInt(form.cancellation_hours) || 2,
+    const res = await fetch("/api/admin/create-complex", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
     });
 
-    if (error) {
-      setError(error.message);
+    const data = await res.json();
+
+    if (!res.ok) {
+      setError(data.error ?? "Error al crear el complejo");
       setLoading(false);
       return;
     }
