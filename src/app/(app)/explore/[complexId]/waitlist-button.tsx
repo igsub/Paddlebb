@@ -8,9 +8,10 @@ import { Button } from "@/components/ui/button";
 interface WaitlistButtonProps {
   slotId: string;
   isWaitlisted: boolean;
+  onToggle?: (slotId: string, joined: boolean) => void;
 }
 
-export function WaitlistButton({ slotId, isWaitlisted: initialWaitlisted }: WaitlistButtonProps) {
+export function WaitlistButton({ slotId, isWaitlisted: initialWaitlisted, onToggle }: WaitlistButtonProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [waitlisted, setWaitlisted] = useState(initialWaitlisted);
@@ -24,9 +25,11 @@ export function WaitlistButton({ slotId, isWaitlisted: initialWaitlisted }: Wait
     if (waitlisted) {
       await supabase.from("waitlist").delete().eq("slot_id", slotId).eq("player_id", user.id);
       setWaitlisted(false);
+      onToggle?.(slotId, false);
     } else {
       await supabase.from("waitlist").insert({ slot_id: slotId, player_id: user.id });
       setWaitlisted(true);
+      onToggle?.(slotId, true);
     }
 
     setLoading(false);

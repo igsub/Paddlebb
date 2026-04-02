@@ -1,14 +1,10 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { formatTime, formatCurrency } from "@/lib/utils";
 import { MapPin, Phone, MessageCircle, Star } from "lucide-react";
-import { BookButton } from "./book-button";
-import { WaitlistButton } from "./waitlist-button";
 import { ComplexDetailMap } from "./complex-detail-map";
-import { Complex, Court, Slot } from "@/types";
+import { SlotsGrid } from "./slots-grid";
+import { Complex, Slot } from "@/types";
 
 const surfaceLabels: Record<string, string> = {
   cemento: "Cemento",
@@ -81,12 +77,6 @@ export default async function ComplexDetailPage({
     d.setDate(d.getDate() + i);
     return d.toISOString().split("T")[0];
   });
-
-  const slotsByCourtId: Record<string, Slot[]> = {};
-  for (const slot of slots ?? []) {
-    if (!slotsByCourtId[slot.court_id]) slotsByCourtId[slot.court_id] = [];
-    slotsByCourtId[slot.court_id].push(slot as Slot);
-  }
 
   const c = complex as Complex & {
     lat?: number;
@@ -180,96 +170,20 @@ export default async function ComplexDetailPage({
         })}
       </div>
 
-      {/* Courts and slots */}
-      {!courts || courts.length === 0 ? (
-        <p className="text-gray-500 text-sm text-center py-8">
-          Este complejo aún no tiene canchas disponibles
-        </p>
-      ) : (
-        courts.map((court) => {
-          const courtSlots = slotsByCourtId[court.id] ?? [];
-          return (
-            <Card key={court.id}>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base flex items-center gap-2 flex-wrap">
-                  {(court as Court).name}
-                  <Badge variant="secondary">
-                    {surfaceLabels[(court as Court).surface] ?? (court as Court).surface}
-                  </Badge>
-                  {(court as Court).indoor && (
-                    <Badge variant="outline">Cubierta</Badge>
-                  )}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {courtSlots.length === 0 ? (
-                  <p className="text-sm text-gray-400 py-2">
-                    Sin turnos disponibles para este día
-                  </p>
-                ) : (
-                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                    {courtSlots.map((slot) => (
-                      <div
-                        key={slot.id}
-                        className={`rounded-xl border p-3 text-center transition-all ${
-                          slot.status === "available"
-                            ? "border-emerald-200 bg-emerald-50"
-                            : slot.status === "booked"
-                            ? "border-gray-200 bg-gray-50"
-                            : "border-gray-100 bg-gray-50 opacity-50"
-                        }`}
-                      >
-                        <p className="text-sm font-bold text-gray-800">
-                          {formatTime(slot.start_time)}
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          {formatTime(slot.end_time)}
-                        </p>
-                        <p className="text-xs font-semibold text-gray-700 mt-1">
-                          {formatCurrency(slot.price)}
-                        </p>
-                        <div className="mt-2">
-                          {slot.status === "available" && user && (
-                            <BookButton
-                              slotId={slot.id}
-                              complexId={complexId}
-                              date={selectedDate}
-                            />
-                          )}
-                          {slot.status === "booked" && user && (
-                            <WaitlistButton
-                              slotId={slot.id}
-                              isWaitlisted={waitlistedSlotIds.has(slot.id)}
-                            />
-                          )}
-                          {slot.status === "blocked" && (
-                            <span className="text-xs text-gray-400">
-                              No disponible
-                            </span>
-                          )}
-                          {!user && slot.status === "available" && (
-                            <Link
-                              href="/login"
-                              className="block text-xs text-emerald-600 font-semibold py-1"
-                            >
-                              Reservar
-                            </Link>
-                          )}
-                          {slot.status === "booked" && !user && (
-                            <span className="text-xs text-orange-600 font-medium">
-                              Ocupada
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          );
-        })
-      )}
+      {/* Courts and slots — realtime */}
+      <SlotsGrid
+        courts={(courts ?? []).map((ct) => ({
+          id: ct.id,
+          name: ct.name,
+          surface: ct.surface,
+          indoor: ct.indoor,
+        }))}
+        initialSlots={(slots ?? []) as Slot[]}
+        selectedDate={selectedDate}
+        complexId={complexId}
+        userId={user?.id ?? null}
+        waitlistedSlotIds={[...waitlistedSlotIds]}
+      />
     </div>
   );
 }

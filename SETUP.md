@@ -19,6 +19,7 @@ Una vez creado el proyecto, ir a **SQL Editor** en el panel de Supabase y ejecut
 1. `supabase/migrations/001_initial_schema.sql`
 2. `supabase/migrations/002_add_location_and_improvements.sql`
 3. `supabase/migrations/003_open_matches.sql`
+4. `supabase/migrations/004_player_level.sql`
 
 ### Obtener las API keys
 
@@ -171,7 +172,18 @@ Los jugadores pueden publicar sus turnos como "partidos abiertos" para buscar co
 
 ---
 
-## 8. Hosting en Vercel (recomendado)
+## 8. Perfil de jugador y nivel de juego
+
+La migración `004_player_level.sql` agrega:
+
+- Campo `level` en la tabla `profiles` (valores: `principiante`, `intermedio`, `avanzado`, `competitivo`)
+- El formulario de registro incluye un campo opcional de teléfono
+- Los jugadores pueden actualizar su nombre, teléfono y nivel desde `/profile`
+- El nivel aparece en los filtros de partidos abiertos
+
+---
+
+## 9. Hosting en Vercel (recomendado)
 
 1. Crear cuenta en [vercel.com](https://vercel.com)
 2. Conectar el repositorio de GitHub
@@ -261,11 +273,14 @@ npm run dev -- --experimental-https
 | `/explore` | Explorar complejos (lista + mapa) |
 | `/explore/[id]` | Ver canchas y reservar |
 | `/bookings` | Mis reservas (jugadores) |
+| `/matches` | Partidos abiertos |
+| `/profile` | Perfil del jugador (nombre, teléfono, nivel) |
 | `/owner/login` | Login exclusivo para dueños de complejos |
 | `/owner/dashboard` | Panel principal del complejo |
 | `/owner/courts` | Gestión de canchas |
 | `/owner/slots` | Vista general de turnos |
 | `/owner/bookings` | Reservas recibidas |
+| `/owner/complex/edit` | Editar datos del complejo |
 | `/admin/login` | Login de administradores |
 | `/admin` | Dashboard admin |
 | `/admin/complexes/new` | Crear nuevo complejo |
