@@ -4,7 +4,6 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Padelbb – Reserva de canchas de padel",
   description: "Encontrá y reservá canchas de padel en tu ciudad",
-  manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",

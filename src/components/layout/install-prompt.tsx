@@ -10,20 +10,26 @@ interface BeforeInstallPromptEvent extends Event {
 
 export function InstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [isIOS, setIsIOS] = useState(false);
+  const [isStandalone, setIsStandalone] = useState(true); // default true to avoid flash
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
-    // Don't show if already installed (standalone mode)
-    if (window.matchMedia("(display-mode: standalone)").matches) return;
+    const standalone = window.matchMedia("(display-mode: standalone)").matches;
+    setIsStandalone(standalone);
+    if (standalone) return;
 
-    // Don't show if previously dismissed this session
-    if (sessionStorage.getItem("install-dismissed")) return;
+    setIsIOS(/iPad|iPhone|iPod/.test(navigator.userAgent));
+
+    if (sessionStorage.getItem("install-dismissed")) {
+      setDismissed(true);
+      return;
+    }
 
     const handler = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
     };
-
     window.addEventListener("beforeinstallprompt", handler);
     return () => window.removeEventListener("beforeinstallprompt", handler);
   }, []);
@@ -32,9 +38,7 @@ export function InstallPrompt() {
     if (!deferredPrompt) return;
     await deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === "accepted") {
-      setDeferredPrompt(null);
-    }
+    if (outcome === "accepted") setDeferredPrompt(null);
   }
 
   function handleDismiss() {
@@ -42,7 +46,34 @@ export function InstallPrompt() {
     setDismissed(true);
   }
 
-  if (!deferredPrompt || dismissed) return null;
+  if (isStandalone || dismissed) return null;
+
+  // iOS: Safari doesn't support beforeinstallprompt — show manual instructions
+  if (isIOS) {
+    return (
+      <div className="fixed bottom-20 md:bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-80 z-50">
+        <div className="bg-white border border-emerald-200 rounded-xl shadow-lg px-4 py-3 flex items-start gap-3">
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-semibold text-gray-800">Instalá Padelbb</p>
+            <p className="text-xs text-gray-500 mt-0.5">
+              Tocá <span className="font-medium">⎋ Compartir</span> y luego{" "}
+              <span className="font-medium">"Agregar a pantalla de inicio" ➕</span>
+            </p>
+          </div>
+          <button
+            onClick={handleDismiss}
+            className="shrink-0 text-gray-400 hover:text-gray-600 mt-0.5"
+            aria-label="Cerrar"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Android/Chrome: native install prompt available
+  if (!deferredPrompt) return null;
 
   return (
     <div className="fixed bottom-20 md:bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-80 z-50">

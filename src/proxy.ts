@@ -37,7 +37,7 @@ export async function proxy(request: NextRequest) {
     publicPaths.some((p) => pathname === p || pathname.startsWith(p + "/")) ||
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api") ||
-    pathname.match(/\.(svg|png|jpg|jpeg|gif|webp|ico|js|css|woff|woff2)$/);
+    pathname.match(/\.(svg|png|jpg|jpeg|gif|webp|ico|js|css|woff|woff2|webmanifest)$/);
 
   if (!user && !isPublic) {
     // Redirect to appropriate login based on path

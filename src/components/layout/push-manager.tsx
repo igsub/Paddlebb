@@ -20,14 +20,18 @@ export function PushManager() {
 
     async function setup() {
       try {
-        const reg = await navigator.serviceWorker.register("/sw.js", {
+        // Register SW (no-op if already registered)
+        await navigator.serviceWorker.register("/sw.js", {
           scope: "/",
           updateViaCache: "none",
         });
 
+        // Wait until SW is fully active before accessing pushManager
+        const reg = await navigator.serviceWorker.ready;
+
         const existing = await reg.pushManager.getSubscription();
         if (existing) {
-          // Re-sync subscription to DB (may be null if user logged in from new device)
+          // Re-sync to DB on every mount (handles new logins / VAPID key rotations)
           await subscribePush(JSON.parse(JSON.stringify(existing)));
           return;
         }
@@ -43,8 +47,8 @@ export function PushManager() {
         });
 
         await subscribePush(JSON.parse(JSON.stringify(sub)));
-      } catch {
-        // Push setup failed silently — app works without notifications
+      } catch (e) {
+        console.error("[push] setup failed:", e);
       }
     }
 
