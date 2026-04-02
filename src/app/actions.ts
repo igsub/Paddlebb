@@ -103,11 +103,14 @@ export async function notifyUser(userId: string, payload: PushPayload) {
   try {
     await sendPushNotification(profile.push_subscription as PushSubscriptionJSON, payload);
   } catch (err: unknown) {
-    if ((err as Error).message === "SUBSCRIPTION_EXPIRED") {
+    const msg = (err as Error).message;
+    if (msg === "SUBSCRIPTION_EXPIRED") {
       await supabase
         .from("profiles")
         .update({ push_subscription: null })
         .eq("id", userId);
+    } else {
+      console.error("[push] sendPushNotification failed:", msg, err);
     }
   }
 }
