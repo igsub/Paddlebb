@@ -210,9 +210,12 @@ En Vercel:
 
 ## 8. Iconos PWA
 
-Para que la app sea instalable con íconos correctos, agregar en `public/icons/`:
-- `icon-192.png` (192×192 px)
-- `icon-512.png` (512×512 px)
+El repositorio incluye íconos SVG placeholder en `public/icons/` que funcionan en desarrollo. Para producción y PWA instalable en iOS/Android, reemplazarlos con PNGs:
+
+- `public/icons/icon-192.png` (192×192 px)
+- `public/icons/icon-512.png` (512×512 px)
+
+Y actualizar `src/app/manifest.ts` cambiando `type: "image/svg+xml"` por `type: "image/png"` y los nombres de archivo a `.png`.
 
 Usar [realfavicongenerator.net](https://realfavicongenerator.net) para generarlos fácilmente desde un logo.
 
